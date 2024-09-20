@@ -11,6 +11,8 @@ public class Book {
     private String author;
     /** Number of Pages of Book */
     private int length;
+    /** Genre of the Book */
+    private Genre genre;
     
     /**
      * Generates Book Object with title, author, and length
@@ -18,10 +20,11 @@ public class Book {
      * @param Author author's last name
      * @param length Number of pages
      */
-    public Book(String title, String author, int length) {
+    public Book(String title, String author, String genre, int length) {
         setTitle(title);
         setAuthor(author);
         setLength(length);
+        setGenre(genre);
     }
 
     /**
@@ -67,6 +70,22 @@ public class Book {
     }
 
     /**
+     * Sets the Books genre as a Genre object
+     * @param genre String genre of Book
+     */
+    public void setGenre(String genre) {
+        this.genre = new Genre(genre);
+    }
+
+    /**
+     * Gets the Book's genre
+     * @return Genre of Book
+     */
+    public Genre getGenre() {
+        return this.genre;
+    }
+
+    /**
      * Sets the number of pages of book
      * @param length Number of pages
      * @throws IllegalArgumentException if length is 0
@@ -94,7 +113,7 @@ public class Book {
      */
     @Override
     public String toString() {
-        return title + "," + author + "," + length;
+        return title + "," + author + "," + genre + "," + length;
     }
 
     /**

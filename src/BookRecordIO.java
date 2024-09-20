@@ -18,7 +18,7 @@ public class BookRecordIO {
      * @return ArrayList of Books
      * @throws FileNotFoundException if file is not found
      */
-    public static ArrayList<Book> readCourseRecords(String filename) throws FileNotFoundException {
+    public static ArrayList<Book> readBookRecords(String filename) throws FileNotFoundException {
         Scanner scan = new Scanner(new FileInputStream(filename));
         ArrayList<Book> books = new ArrayList<Book>();
         
@@ -62,6 +62,7 @@ public class BookRecordIO {
         try {
             String title = scan.next();
             String author = scan.next();
+            String genre = scan.next();
             int length = scan.nextInt();
 
             if (scan.hasNext()) {
@@ -70,7 +71,7 @@ public class BookRecordIO {
             }
             else {
                 scan.close();
-                return new Book(title, author, length);
+                return new Book(title, author, genre, length);
             }
         } catch (Exception e) {
             scan.close();
