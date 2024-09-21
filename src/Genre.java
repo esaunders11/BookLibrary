@@ -6,7 +6,7 @@
 public class Genre {
     /** List of available genres */
     public static final String[] genres = {"Fiction", "Non-Fiction", "Romance", "Mystery", "Fantasy", "Sci-Fi", "Historical Fiction",
-    "Western", "Biography", "Memior", "Children", "Horror"};
+    "Western", "Biography", "Memior", "Children", "Horror", "Classic"};
     /** Type of genre */
     private String type;
 
@@ -41,4 +41,14 @@ public class Genre {
     public String getType() {
         return this.type;
     }
+
+    /**
+     * Generates String of Genre
+     */
+    @Override
+    public String toString() {
+        return type;
+    }
+
+    
 }

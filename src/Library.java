@@ -60,6 +60,17 @@ public class Library {
         }
     }
 
+    public String[][] getBooks() {
+        String[][] library = new String[books.size()][4];
+        for (int i = 0; i < library.length; i++) {
+            library[i][0] = books.get(i).getTitle();
+            library[i][1] = books.get(i).getAuthor();
+            library[i][2] = "" + books.get(i).getGenre();
+            library[i][3] = "" + books.get(i).getLength();
+        }
+        return library;
+    }
+
     /**
      * Resets Library to emtpy ArrayList
      */
