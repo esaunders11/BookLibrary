@@ -96,4 +96,6 @@ public class BookTest {
         assertEquals(book1.hashCode(), sameBook.hashCode(), "Books with same attributes should have the same hashCode");
 
         assertFalse(book1.equals(book2), "Different books should not be equal");
+    }
+}
     

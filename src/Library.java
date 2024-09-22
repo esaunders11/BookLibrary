@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 
 /**
  * Library Class. Holds Books that can be added, removed and exported
@@ -12,16 +14,28 @@ public class Library {
     /** List of all the Library Books */
     private ArrayList<Book> books;
 
+    private ArrayList<Book> importLibrary;
+
     /**
-     * Creates Library with default label and imported books
+     * Creates Library with default label and emtpy books
      * @param file name of file
      * @throws IllegalArgumentException if file is invalid
      */
-    public Library(String file) {
-        this.books = new ArrayList<Book>();
-        this.label = "Library";
+    public Library() {
+        setBooks();
+    }
+
+    /**
+     * Imports a library from a file and adds it to the table of books
+     * @param file filename
+     */
+    public void addLibrary(String file) {
         try {
-            this.books = BookRecordIO.readBookRecords(file);
+            this.importLibrary = BookRecordIO.readBookRecords(file);
+            for (Book b : importLibrary) {
+                this.books.add(b);
+            }
+            sortBooks();
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid file.");
         }
@@ -43,6 +57,7 @@ public class Library {
             }
         }
         books.add(book);
+        sortBooks();
         return true;
     }
 
@@ -54,10 +69,16 @@ public class Library {
     public boolean removeBook(int idx) {
         try {
             books.remove(idx);
+            sortBooks();
             return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
+    }
+
+    public void setBooks() {
+        this.books = new ArrayList<Book>();
+        this.label = "Library";
     }
 
     public String[][] getBooks() {
@@ -109,5 +130,58 @@ public class Library {
             throw new IllegalArgumentException("The file cannot be saved.");
         }
     }
+
+    /**
+     * Sorts the Librar alphabetically by Authors last name
+     */
+    public void sortBooks() {
+        Collections.sort(books, new BookComparator());
+    }
+
+    /**
+     * Hash code
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((label == null) ? 0 : label.hashCode());
+        result = prime * result + ((books == null) ? 0 : books.hashCode());
+        result = prime * result + ((importLibrary == null) ? 0 : importLibrary.hashCode());
+        return result;
+    }
+
+    /**
+     * Equals method if two Libraries are the same
+     * @param obj another object
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Library other = (Library) obj;
+        if (label == null) {
+            if (other.label != null)
+                return false;
+        } else if (!label.equals(other.label))
+            return false;
+        if (books == null) {
+            if (other.books != null)
+                return false;
+        } else if (!books.equals(other.books))
+            return false;
+        if (importLibrary == null) {
+            if (other.importLibrary != null)
+                return false;
+        } else if (!importLibrary.equals(other.importLibrary))
+            return false;
+        return true;
+    }
+
+    
 
 }

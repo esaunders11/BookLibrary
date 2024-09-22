@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,13 +26,7 @@ public class LibraryGUI {
 
         frame.setLocationRelativeTo(null);
 
-        // File import dialog
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(frame);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            library = new Library(selectedFile.getAbsolutePath()); // Pass filename to Library constructor
-        }
+        library = new Library();
 
         // Table of books
         String[] columns = {"Title", "Author", "Genre", "Number of Pages"};
@@ -95,9 +90,14 @@ public class LibraryGUI {
                     return;
                 }
 
-                Book newBook = new Book(title, author, genre, length);
-                library.addBook(newBook);  // Assuming you will add an addBook method in Library to handle 2D string arrays
-                updateTable();
+                try {
+                    Book newBook = new Book(title, author, genre, length);
+                    library.addBook(newBook);  // Assuming you will add an addBook method in Library to handle 2D string arrays
+                    updateTable();
+                } catch (Exception e2) {
+                    JOptionPane.showMessageDialog(frame, "Invalid Genre.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 titleField.setText("");
                 authorField.setText("");
@@ -114,6 +114,22 @@ public class LibraryGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 library.resetLibrary();  // Assuming resetLibrary handles clearing the 2D array
+                updateTable();
+            }
+        });
+
+        // Load library button
+        JButton loadButton = new JButton("Load Library");
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // File import dialog
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(frame);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    library.addLibrary(selectedFile.getAbsolutePath()); // Pass filename to Library constructor
+                }
                 updateTable();
             }
         });
@@ -160,6 +176,7 @@ public class LibraryGUI {
         JPanel bottomPanel = new JPanel(new GridLayout(2, 1));
         bottomPanel.add(removeButton);
         bottomPanel.add(resetButton);
+        bottomPanel.add(loadButton);
         bottomPanel.add(exportButton);
 
         frame.add(addBookPanel, BorderLayout.NORTH);
