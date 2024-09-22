@@ -200,9 +200,9 @@ public class LibraryGUI {
         String[][] books = library.getBooks();
         for (String[] book : books) {
             if (book != null) {
-                preview.append(book[0]).append(" by ").append(book[1])
-                        .append(" (").append(book[2]).append(" - ")
-                        .append(book[3]).append(" pages)").append("\n");
+                preview.append(book[0]).append(",").append(book[1])
+                        .append(",").append(book[2]).append(",")
+                        .append(book[3]).append("\n");
             }
         }
         return preview.toString();
