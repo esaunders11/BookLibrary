@@ -34,11 +34,34 @@ public class LibraryGUI {
         // Table of books
         String[] columns = {"Title", "Author", "Genre", "Number of Pages"};
         tableModel = new DefaultTableModel(columns, 0);
-        JTable bookTable = new JTable(tableModel);
+        JTable bookTable = new JTable(tableModel) {
+            public boolean editCellAt(int row, int column, java.util.EventObject e) {
+                return false;
+            }
+        };
         JScrollPane scrollPane = new JScrollPane(bookTable);
         frame.add(scrollPane, BorderLayout.CENTER);
 
         updateTable();
+
+        bookTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedRow = bookTable.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        // Fetch book information from the selected row
+                        String title = (String) tableModel.getValueAt(selectedRow, 0);
+                        String author = (String) tableModel.getValueAt(selectedRow, 1);
+                        Book book = library.getBook(title, author);
+                        
+                        // Open a new window to display the book information
+                        showBookInfo(book);
+                    }
+                }
+            }
+        });
+        
 
         JTableHeader header = bookTable.getTableHeader();
         header.addMouseListener(new MouseAdapter() {
@@ -120,6 +143,8 @@ public class LibraryGUI {
 
                 try {
                     Book newBook = new Book(title, author, genre, length);
+                    String[] info = BookAPI.searchBook(newBook.getTitle());
+                    newBook.addInfo(info);
                     library.addBook(newBook);  // Assuming you will add an addBook method in Library to handle 2D string arrays
                     updateTable();
                 } catch (Exception e2) {
@@ -212,6 +237,38 @@ public class LibraryGUI {
 
         frame.setVisible(true);
     }
+
+    private void showBookInfo(Book b) {
+        // Create a new JDialog to display the book information
+        JFrame bookInfoDialog = new JFrame();
+        bookInfoDialog.setTitle("Book Information");
+        bookInfoDialog.setSize(300, 200);
+        bookInfoDialog.setLayout(new GridLayout(5, 1));
+
+        // Add labels to display the book's information
+        bookInfoDialog.add(new JLabel("Info:"));
+        try {
+        bookInfoDialog.add(new JLabel(b.getInfo()[0]));
+        bookInfoDialog.add(new JLabel(b.getInfo()[1]));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(bookInfoDialog, "Failed to find info.");
+        }
+        // Add a close button to the dialog
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bookInfoDialog.dispose(); // Close the dialog
+            }
+        });
+
+        bookInfoDialog.add(closeButton);
+
+        // Center the dialog and make it visible
+        bookInfoDialog.setLocationRelativeTo(null);
+        bookInfoDialog.setVisible(true);
+    }
+
 
     private void updateTable() {
         tableModel.setRowCount(0); // Clear table

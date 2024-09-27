@@ -13,6 +13,8 @@ public class Book {
     private int length;
     /** Genre of the Book */
     private Genre genre;
+    /** Book information */
+    private String[] info;
     
     /**
      * Generates Book Object with title, author, and length
@@ -25,6 +27,14 @@ public class Book {
         setAuthor(author);
         setLength(length);
         setGenre(genre);
+    }
+
+    public void addInfo(String[] info) {
+        this.info = info;
+    }
+
+    public String[] getInfo(){
+        return info;
     }
 
     /**

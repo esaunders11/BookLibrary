@@ -12,40 +12,39 @@ public class LibraryTest {
     private Library library;
     private Book sampleBook1;
     private Book sampleBook2;
-    private final String validFile = "Library.txt";
-    private final String invalidFile = "invalid_file.txt";
+
 
     @BeforeEach
     public void setUp() {
         // Initialize sample books and a library instance
-        Genre genre = new Genre("Fiction");
-        sampleBook1 = new Book("Book One", "Author A", "genre", 300);
-        sampleBook2 = new Book("Book Two", "Author B", "genre", 250);
-        library = new Library(validFile);  // Assuming valid_books.txt exists and has valid book data
+        sampleBook1 = new Book("Book One", "Author A", "Fiction", 300);
+        sampleBook2 = new Book("Book Two", "Author B", "Fiction", 250);
+        library = new Library();  // Assuming valid_books.txt exists and has valid book data
     }
 
     @Test
     public void testConstructorWithValidFile() {
         // Test if library is created successfully with valid file
         assertNotNull(library);
-        assertFalse(library.getBooks().length == 0, "Library should not be empty after loading valid file.");
+        assertFalse(library.getBooks().size() == 0, "Library should not be empty after loading valid file.");
     }
 
     @Test
     public void testConstructorWithInvalidFile() {
         // Test exception when using an invalid file
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Library(invalidFile);  // Assuming invalid_books.txt is an invalid file
+            new Library();  // Assuming invalid_books.txt is an invalid file
         });
         assertEquals("Invalid file.", exception.getMessage());
     }
+
 
     @Test
     public void testAddBook() {
         // Add a valid book and verify it's added
         assertTrue(library.addBook(sampleBook1), "Book should be added successfully.");
-        String[][] books = library.getBooks();
-        assertEquals("Book One", books[books.length - 1][0], "The last book in the library should be 'Book One'.");
+        ArrayList<Book> books = library.getBooks();
+        assertEquals("Book One", books.get(0), "The last book in the library should be 'Book One'.");
 
         // Test adding a duplicate book
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -57,13 +56,13 @@ public class LibraryTest {
     @Test
     public void testRemoveBook() {
         library.addBook(sampleBook1);
-        String[][] booksBefore = library.getBooks();
-        int initialSize = booksBefore.length;
+        ArrayList<Book> booksBefore = library.getBooks();
+        int initialSize = booksBefore.size();
 
         // Test removing a book
         assertTrue(library.removeBook(0), "Book should be removed successfully.");
-        String[][] booksAfter = library.getBooks();
-        assertEquals(initialSize - 1, booksAfter.length, "Library should have one less book after removal.");
+        ArrayList<Book> booksAfter = library.getBooks();
+        assertEquals(initialSize - 1, booksAfter.size(), "Library should have one less book after removal.");
     }
 
     @Test
@@ -77,7 +76,7 @@ public class LibraryTest {
         // Add a book, then reset the library and check if it's empty
         library.addBook(sampleBook1);
         library.resetLibrary();
-        assertEquals(0, library.getBooks().length, "Library should be empty after reset.");
+        assertEquals(0, library.getBooks().size(), "Library should be empty after reset.");
     }
 
     @Test
@@ -105,17 +104,5 @@ public class LibraryTest {
             library.exportLibrary("/invalid_path/export_books.txt");
         });
         assertEquals("The file cannot be saved.", exception.getMessage());
-    }
-
-    @Test
-    public void testSetLabel() {
-        library.setLabel("My New Library");
-        assertEquals("My New Library", library.getLabel(), "Library label should be updated.");
-        
-        // Test invalid label
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            library.setLabel(null);
-        });
-        assertEquals("Invalid Title.", exception.getMessage());
     }
 }

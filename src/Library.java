@@ -86,6 +86,15 @@ public class Library {
         return books;
     }   
 
+    public Book getBook(String title, String author) {
+        for (Book b : books) {
+            if (b.getTitle().equals(title) && b.getAuthor().equals(author)) {
+                return b;
+            }
+        }
+        return null;
+    }
+
     /**
      * Returns a 2D string of the Library
      * @return 2D string of library
