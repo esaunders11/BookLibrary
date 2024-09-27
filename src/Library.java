@@ -9,11 +9,9 @@ import java.util.Collections;
  * @author Ethan Saunders
  */
 public class Library {
-    /** Title of Library */
-    private String label;
     /** List of all the Library Books */
     private ArrayList<Book> books;
-
+    /** List of imported Books */
     private ArrayList<Book> importLibrary;
 
     /**
@@ -35,7 +33,6 @@ public class Library {
             for (Book b : importLibrary) {
                 this.books.add(b);
             }
-            sortBooks();
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid file.");
         }
@@ -57,7 +54,6 @@ public class Library {
             }
         }
         books.add(book);
-        sortBooks();
         return true;
     }
 
@@ -69,19 +65,32 @@ public class Library {
     public boolean removeBook(int idx) {
         try {
             books.remove(idx);
-            sortBooks();
             return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
     }
 
+    /**
+     * Sets library to an empty ArrayList
+     */
     public void setBooks() {
         this.books = new ArrayList<Book>();
-        this.label = "Library";
     }
 
-    public String[][] getBooks() {
+    /**
+     * Returns the Books ArrayList
+     * @return ArrayList of Books
+     */
+    public ArrayList<Book> getBooks() {
+        return books;
+    }   
+
+    /**
+     * Returns a 2D string of the Library
+     * @return 2D string of library
+     */
+    public String[][] getBookString() {
         String[][] library = new String[books.size()][4];
         for (int i = 0; i < library.length; i++) {
             library[i][0] = books.get(i).getTitle();
@@ -96,26 +105,7 @@ public class Library {
      * Resets Library to emtpy ArrayList
      */
     public void resetLibrary() {
-        this.books = new ArrayList<Book>();
-    }
-
-    /**
-     * Sets the label of the Library
-     * @param label label of Library
-     */
-    public void setLabel(String label) {
-        if (label == null) {
-            throw new IllegalArgumentException("Invalid Title.");
-        }
-        this.label = label;
-    }
-
-    /**
-     * Return the label of the Library
-     * @return label of Library
-     */
-    public String getLabel() {
-        return this.label;
+        this.books.clear();
     }
 
     /**
@@ -132,10 +122,31 @@ public class Library {
     }
 
     /**
-     * Sorts the Librar alphabetically by Authors last name
+     * Sorts the Library alphabetically by Authors last name
      */
-    public void sortBooks() {
-        Collections.sort(books, new BookComparator());
+    public static void sortBooksAuthor(Library L) {
+        Collections.sort(L.getBooks(), new BookAuthorComparator());
+    }
+
+    /**
+     * Sorts the Library alphabetically by Title
+     */
+    public static void sortBooksTitle(Library L) {
+        Collections.sort(L.getBooks(), new BookTitleComparator());
+    }
+
+    /**
+     * Sorts the Library by number of pages
+     */
+    public static void sortBooksLength(Library L) {
+        Collections.sort(L.getBooks(), new BookPagesComparator());
+    }
+
+    /**
+     * Sorts the library by Genre Alphabetically
+     */
+    public static void sortBooksGenre(Library L) {
+        Collections.sort(L.getBooks(), new BookGenreComparator());
     }
 
     /**
@@ -145,7 +156,6 @@ public class Library {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((label == null) ? 0 : label.hashCode());
         result = prime * result + ((books == null) ? 0 : books.hashCode());
         result = prime * result + ((importLibrary == null) ? 0 : importLibrary.hashCode());
         return result;
@@ -164,11 +174,6 @@ public class Library {
         if (getClass() != obj.getClass())
             return false;
         Library other = (Library) obj;
-        if (label == null) {
-            if (other.label != null)
-                return false;
-        } else if (!label.equals(other.label))
-            return false;
         if (books == null) {
             if (other.books != null)
                 return false;

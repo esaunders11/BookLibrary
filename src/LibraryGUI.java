@@ -1,9 +1,12 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 
@@ -36,6 +39,31 @@ public class LibraryGUI {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         updateTable();
+
+        JTableHeader header = bookTable.getTableHeader();
+        header.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int col = header.columnAtPoint(e.getPoint());
+                System.out.print(col);
+                if (col == 0) {
+                    Library.sortBooksTitle(library);
+                    updateTable();
+                } 
+                else if (col == 1) {
+                    Library.sortBooksAuthor(library);
+                    updateTable();
+                } 
+                else if (col == 2) {
+                    Library.sortBooksGenre(library);
+                    updateTable();
+                } 
+                else if (col == 3) {
+                    Library.sortBooksLength(library);
+                    updateTable();
+                }
+            }
+        });
 
         // Remove book button
         JButton removeButton = new JButton("Remove Book");
@@ -187,7 +215,7 @@ public class LibraryGUI {
 
     private void updateTable() {
         tableModel.setRowCount(0); // Clear table
-        String[][] books = library.getBooks();
+        String[][] books = library.getBookString();
         for (String[] book : books) {
             if (book != null) {
                 tableModel.addRow(book);
@@ -197,7 +225,7 @@ public class LibraryGUI {
 
     private String libraryPreview() {
         StringBuilder preview = new StringBuilder();
-        String[][] books = library.getBooks();
+        String[][] books = library.getBookString();
         for (String[] book : books) {
             if (book != null) {
                 preview.append(book[0]).append(",").append(book[1])
