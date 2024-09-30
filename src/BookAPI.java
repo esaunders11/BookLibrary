@@ -1,23 +1,24 @@
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.util.Scanner;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-import java.io.File;
-
-
+/**
+ * Searches a web API of given Book title for information of that Book
+ * 
+ * @author Ethan Saunders
+ */
 public class BookAPI {
 
+    /**
+     * Gets url using Book's title and reads through the JSON for specific information
+     * @param search Title of Book
+     * @return String array with Book's information
+     */
     public static String[] searchBook(String search) {
 
         try {

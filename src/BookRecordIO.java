@@ -38,6 +38,8 @@ public class BookRecordIO {
                 }
 
                 if (!duplicate) {
+                    String[] info = BookAPI.searchBook(book.getTitle());
+                    book.addInfo(info);
                     books.add(book);
                 }
 

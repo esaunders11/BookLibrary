@@ -29,10 +29,18 @@ public class Book {
         setGenre(genre);
     }
 
+    /**
+     * Add Book information
+     * @param info list of information
+     */
     public void addInfo(String[] info) {
         this.info = info;
     }
 
+    /**
+     * Returns Book's information
+     * @return list of Book's information
+     */
     public String[] getInfo(){
         return info;
     }

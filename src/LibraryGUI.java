@@ -17,7 +17,6 @@ public class LibraryGUI {
     private DefaultTableModel tableModel;
 
     public LibraryGUI() {
-        // Initialize library and prompt for file
         initialize();
     }
 
@@ -31,7 +30,6 @@ public class LibraryGUI {
 
         library = new Library();
 
-        // Table of books
         String[] columns = {"Title", "Author", "Genre", "Number of Pages"};
         tableModel = new DefaultTableModel(columns, 0);
         JTable bookTable = new JTable(tableModel) {
@@ -50,12 +48,11 @@ public class LibraryGUI {
                 if (e.getClickCount() == 2) {
                     int selectedRow = bookTable.getSelectedRow();
                     if (selectedRow >= 0) {
-                        // Fetch book information from the selected row
                         String title = (String) tableModel.getValueAt(selectedRow, 0);
                         String author = (String) tableModel.getValueAt(selectedRow, 1);
                         Book book = library.getBook(title, author);
                         
-                        // Open a new window to display the book information
+                        
                         showBookInfo(book);
                     }
                 }
@@ -88,14 +85,14 @@ public class LibraryGUI {
             }
         });
 
-        // Remove book button
+        
         JButton removeButton = new JButton("Remove Book");
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = bookTable.getSelectedRow();
                 if (selectedRow >= 0) {
-                    library.removeBook(selectedRow);  // Mark as null, or alternatively, implement a remove method in Library
+                    library.removeBook(selectedRow);  
                     updateTable();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a book to remove.");
@@ -103,7 +100,7 @@ public class LibraryGUI {
             }
         });
 
-        // Add book panel
+        
         JPanel addBookPanel = new JPanel(new GridLayout(5, 2));
         JTextField titleField = new JTextField();
         JTextField authorField = new JTextField();
@@ -145,7 +142,7 @@ public class LibraryGUI {
                     Book newBook = new Book(title, author, genre, length);
                     String[] info = BookAPI.searchBook(newBook.getTitle());
                     newBook.addInfo(info);
-                    library.addBook(newBook);  // Assuming you will add an addBook method in Library to handle 2D string arrays
+                    library.addBook(newBook);  
                     updateTable();
                 } catch (Exception e2) {
                     JOptionPane.showMessageDialog(frame, "Invalid Genre.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -166,28 +163,28 @@ public class LibraryGUI {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                library.resetLibrary();  // Assuming resetLibrary handles clearing the 2D array
+                library.resetLibrary();  
                 updateTable();
             }
         });
 
-        // Load library button
+        
         JButton loadButton = new JButton("Load Library");
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // File import dialog
+                
                 JFileChooser fileChooser = new JFileChooser();
                 int result = fileChooser.showOpenDialog(frame);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    library.addLibrary(selectedFile.getAbsolutePath()); // Pass filename to Library constructor
+                    library.addLibrary(selectedFile.getAbsolutePath()); 
                 }
                 updateTable();
             }
         });
 
-        // Export library button
+    
         JButton exportButton = new JButton("Export Library");
         exportButton.addActionListener(new ActionListener() {
             @Override
@@ -210,7 +207,7 @@ public class LibraryGUI {
                         if (exportResult == JFileChooser.APPROVE_OPTION) {
                             File file = exportFileChooser.getSelectedFile();
                             try {
-                                library.exportLibrary(file.getAbsolutePath());  // Write the library to the file
+                                library.exportLibrary(file.getAbsolutePath());
                                 JOptionPane.showMessageDialog(exportFrame, "Library exported successfully!");
                                 exportFrame.dispose();
                             } catch (Exception ex) {
@@ -225,7 +222,6 @@ public class LibraryGUI {
             }
         });
 
-        // Bottom panel
         JPanel bottomPanel = new JPanel(new GridLayout(2, 1));
         bottomPanel.add(removeButton);
         bottomPanel.add(resetButton);
@@ -239,13 +235,13 @@ public class LibraryGUI {
     }
 
     private void showBookInfo(Book b) {
-        // Create a new JDialog to display the book information
+        
         JFrame bookInfoDialog = new JFrame();
         bookInfoDialog.setTitle("Book Information");
         bookInfoDialog.setSize(300, 200);
         bookInfoDialog.setLayout(new GridLayout(5, 1));
 
-        // Add labels to display the book's information
+        
         bookInfoDialog.add(new JLabel("Info:"));
         try {
         bookInfoDialog.add(new JLabel(b.getInfo()[0]));
@@ -257,25 +253,25 @@ public class LibraryGUI {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(bookInfoDialog, "Failed to find info.");
         }
-        // Add a close button to the dialog
+        
         JButton closeButton = new JButton("Close");
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                bookInfoDialog.dispose(); // Close the dialog
+                bookInfoDialog.dispose(); 
             }
         });
 
         bookInfoDialog.add(closeButton);
 
-        // Center the dialog and make it visible
+        
         bookInfoDialog.setLocationRelativeTo(null);
         bookInfoDialog.setVisible(true);
     }
 
 
     private void updateTable() {
-        tableModel.setRowCount(0); // Clear table
+        tableModel.setRowCount(0); 
         String[][] books = library.getBookString();
         for (String[] book : books) {
             if (book != null) {
