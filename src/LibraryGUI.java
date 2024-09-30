@@ -249,7 +249,11 @@ public class LibraryGUI {
         bookInfoDialog.add(new JLabel("Info:"));
         try {
         bookInfoDialog.add(new JLabel(b.getInfo()[0]));
-        bookInfoDialog.add(new JLabel(b.getInfo()[1]));
+        if (b.getInfo()[1] == null) {
+            bookInfoDialog.add(new JLabel("Ain't work dawg."));
+        } else{
+            bookInfoDialog.add(new JLabel(b.getInfo()[1]));
+        }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(bookInfoDialog, "Failed to find info.");
         }
