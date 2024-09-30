@@ -1,5 +1,9 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import IO.BookRecordIO;
+import book.Book;
+
 import org.junit.jupiter.api.BeforeEach;
 import java.io.*;
 import java.util.ArrayList;

@@ -2,6 +2,9 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import book.Book;
+import book.Genre;
+
 public class BookTest {
 
     private Book book1;

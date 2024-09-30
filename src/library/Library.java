@@ -1,6 +1,14 @@
+package library;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import IO.BookRecordIO;
+import book.Book;
+import book.BookAuthorComparator;
+import book.BookGenreComparator;
+import book.BookPagesComparator;
+import book.BookTitleComparator;
 
 
 /**
@@ -11,13 +19,9 @@ import java.util.Collections;
 public class Library {
     /** List of all the Library Books */
     private ArrayList<Book> books;
-    /** List of imported Books */
-    private ArrayList<Book> importLibrary;
 
     /**
-     * Creates Library with default label and emtpy books
-     * @param file name of file
-     * @throws IllegalArgumentException if file is invalid
+     * Creates Library with an empty list
      */
     public Library() {
         setBooks();
@@ -25,11 +29,12 @@ public class Library {
 
     /**
      * Imports a library from a file and adds it to the table of books
-     * @param file filename
+     * @param file file name
      */
     public void addLibrary(String file) {
+        ArrayList<Book> importLibrary = new ArrayList<Book>();
         try {
-            this.importLibrary = BookRecordIO.readBookRecords(file);
+            importLibrary = BookRecordIO.readBookRecords(file);
             for (Book b : importLibrary) {
                 this.books.add(b);
             }
@@ -86,6 +91,12 @@ public class Library {
         return books;
     }   
 
+    /**
+     * Gets a specific Book from Library using title and author
+     * @param title title of Book
+     * @param author author's last name
+     * @return specified Book or null
+     */
     public Book getBook(String title, String author) {
         for (Book b : books) {
             if (b.getTitle().equals(title) && b.getAuthor().equals(author)) {
@@ -132,6 +143,7 @@ public class Library {
 
     /**
      * Sorts the Library alphabetically by Authors last name
+     * @param L library
      */
     public static void sortBooksAuthor(Library L) {
         Collections.sort(L.getBooks(), new BookAuthorComparator());
@@ -139,6 +151,8 @@ public class Library {
 
     /**
      * Sorts the Library alphabetically by Title
+     * 
+     * @param L library
      */
     public static void sortBooksTitle(Library L) {
         Collections.sort(L.getBooks(), new BookTitleComparator());
@@ -146,6 +160,7 @@ public class Library {
 
     /**
      * Sorts the Library by number of pages
+     * @param L library
      */
     public static void sortBooksLength(Library L) {
         Collections.sort(L.getBooks(), new BookPagesComparator());
@@ -153,6 +168,7 @@ public class Library {
 
     /**
      * Sorts the library by Genre Alphabetically
+     * @param L library
      */
     public static void sortBooksGenre(Library L) {
         Collections.sort(L.getBooks(), new BookGenreComparator());
@@ -166,7 +182,6 @@ public class Library {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((books == null) ? 0 : books.hashCode());
-        result = prime * result + ((importLibrary == null) ? 0 : importLibrary.hashCode());
         return result;
     }
 
@@ -187,11 +202,6 @@ public class Library {
             if (other.books != null)
                 return false;
         } else if (!books.equals(other.books))
-            return false;
-        if (importLibrary == null) {
-            if (other.importLibrary != null)
-                return false;
-        } else if (!importLibrary.equals(other.importLibrary))
             return false;
         return true;
     }

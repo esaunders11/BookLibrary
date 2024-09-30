@@ -1,3 +1,4 @@
+package book;
 /**
  * Book class creates book objects,
  * Books have a title, genre, length, and author's last name
@@ -18,9 +19,10 @@ public class Book {
     
     /**
      * Generates Book Object with title, author, and length
-     * @param Title title of Book
-     * @param Author author's last name
+     * @param title title of Book
+     * @param author author's last name
      * @param length Number of pages
+     * @param genre Genre of Book
      */
     public Book(String title, String author, String genre, int length) {
         setTitle(title);

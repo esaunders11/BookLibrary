@@ -1,6 +1,11 @@
+package ui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import book.Book;
+import book.BookAPI;
+import library.Library;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

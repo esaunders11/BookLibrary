@@ -1,0 +1,7 @@
+A Tale of Two Cities,Dickens,Classic,390
+The Count of Monte Cristo,Dumas,Classic,1243
+Catch-22,Heller,Classic,453
+The Name of the Wind,Rothfuss,Fantasy,722
+Hyperion,Simmons,Sci-Fi,390
+East of Eden,Steinbeck,Classic,602
+Grapes of Wrath,Steinbeck,Classic,495

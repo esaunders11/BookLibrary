@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import book.Book;
+import library.Library;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
